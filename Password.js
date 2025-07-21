@@ -1,18 +1,16 @@
-let Password = document.querySelector("#password");
-let button = document.querySelector("#generateBtn");
-let range = document.querySelector("#range");
+const Password = document.getElementById("password");
+const Length = document.getElementById("length");
+const Lengthvalue = document.getElementById("length-value");
+const Uppercasecheckbox = document.getElementById("uppercase");
+const Lowercasecheckbox = document.getElementById("lowercase");
+const Numbercheckbox = document.getElementById("numbers");
+const Symbolscheckbox = document.getElementById("symbols");
+const Generatebtn = document.getElementById("generate-btn");
+const Copybtn = document.getElementById("copy-btn");
+const Strengthbar = document.querySelector(".bar");
+const StrengthText = document.querySelector(".strength-container p");
 
-const characters =
-  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?";
-
-button.addEventListener("click", () => {
-  let Passwordlength = range.value;
-  let Generatepasswrod = "";
-
-  for (let i = 0; i < Passwordlength; i++) {
-    let random = Math.floor(Math.random() * characters.length);
-    Generatepasswrod += characters[random];
-  }
-
-  Password.value = Generatepasswrod;
-});
+const uppercaseLetters = "";
+const lowercaseLetters = "";
+const numberCharacters = "";
+const SymbolsCharacters = "";
