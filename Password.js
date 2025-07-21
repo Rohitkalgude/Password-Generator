@@ -1,135 +1,117 @@
-const Password = document.getElementById("password");
-const Length = document.getElementById("length");
-const Lengthvalue = document.getElementById("length-value");
-const Uppercasecheckbox = document.getElementById("uppercase");
-const Lowercasecheckbox = document.getElementById("lowercase");
-const Numbercheckbox = document.getElementById("numbers");
-const Symbolscheckbox = document.getElementById("symbols");
-const Generatebtn = document.getElementById("generate-btn");
-const Copybtn = document.getElementById("copy-btn");
-const Strengthbar = document.querySelector(".bar");
-const StrengthText = document.querySelector(".strength-container p");
-const Strengthlabel = document.getElementById("strength-label");
+const passwordEl = document.getElementById("password");
+const lengthEl = document.getElementById("length");
+const lengthValueEl = document.getElementById("length-value");
+const uppercaseCheckbox = document.getElementById("uppercase");
+const lowercaseCheckbox = document.getElementById("lowercase");
+const numbersCheckbox = document.getElementById("numbers");
+const symbolsCheckbox = document.getElementById("symbols");
+const generateBtn = document.getElementById("generate-btn");
+const copyBtn = document.getElementById("copy-btn");
+const strengthBar = document.querySelector(".bar");
+const strengthLabel = document.getElementById("strength-label");
 
 const uppercaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const lowercaseLetters = "abcdefghijklmnopqrstuvwxyz";
 const numberCharacters = "0123456789";
-const SymbolsCharacters = "!@#$%^&*()_+=-[]{}|;:',.<>/?";
+const symbolsCharacters = "!@#$%^&*()_+=-[]{}|;:',.<>/?";
 
-Length.addEventListener("input", () => {
-  Lengthvalue.textContent = Length.value;
+lengthEl.addEventListener("input", () => {
+  lengthValueEl.textContent = lengthEl.value;
 });
 
-Generatebtn.addEventListener("click", makepassword);
-
-function makepassword() {
-  const Length = parseInt(Lengthvalue.value);
-  const Includeuppercase = Uppercasecheckbox.checked;
-  const Includelowercase = Lowercasecheckbox.checked;
-  const IncludeNumber = Numbercheckbox.checked;
-  const IncludeSymbols = Symbolscheckbox.checked;
+generateBtn.addEventListener("click", () => {
+  const length = parseInt(lengthEl.value);
+  const includeUppercase = uppercaseCheckbox.checked;
+  const includeLowercase = lowercaseCheckbox.checked;
+  const includeNumbers = numbersCheckbox.checked;
+  const includeSymbols = symbolsCheckbox.checked;
 
   if (
-    !Includeuppercase &&
-    !Includelowercase &&
-    !IncludeNumber &&
-    !IncludeSymbols
+    !includeUppercase &&
+    !includeLowercase &&
+    !includeNumbers &&
+    !includeSymbols
   ) {
-    alert("Please Select at least one char type");
+    alert("Please select at least one character type!");
     return;
   }
 
-  const Newpassword = Createnewpassword(
-    Length,
-    Includeuppercase,
-    IncludeSymbols,
-    Includelowercase,
-    IncludeNumber
+  const newPassword = createPassword(
+    length,
+    includeUppercase,
+    includeLowercase,
+    includeNumbers,
+    includeSymbols
   );
 
-  Password.value = Newpassword;
-  updatestrengthMeter(Newpassword);
-}
-
-function Createnewpassword(
-  Length,
-  Includeuppercase,
-  IncludeSymbols,
-  Includelowercase,
-  IncludeNumber
-) {
-  let allCharacters = "";
-  let Password = "";
-
-  if (Includeuppercase) {
-    allCharacters += uppercaseLetters;
-  }
-
-  if (Includelowercase) {
-    allCharacters += lowercaseLetters;
-  }
-
-  if (IncludeNumber) {
-    allCharacters += numberCharacters;
-  }
-
-  if (IncludeSymbols) {
-    allCharacters += SymbolsCharacters;
-  }
-
-  for (let i = 0; i < Length; i++) {
-    const RandomIndex = Math.floor(Math.random() * allCharacters.length);
-    Password += allCharacters.charAt(RandomIndex);
-  }
-
-  return Password;
-}
-
-function updatestrengthMeter(Password) {
-  const Passwordlength = Password.length;
-  const hasUppercase = /[A-Z]/.test(Password);
-  const hasLowercase = /[a-z]/.test(Password);
-  const hasNumber = /[0-9]/.test(Password);
-  const hasSymbols = /[!@#$%^&*()_+{}[]|:;<>,.?~]/.test(Password);
-
-  let Strengthscore = 0;
-
-  Strengthscore += Math.min(Passwordlength * 2, 40);
-
-  if (hasUppercase) Strengthscore += 15;
-  if (hasLowercase) Strengthscore += 15;
-  if (hasNumber) Strengthscore += 15;
-  if (hasSymbols) Strengthscore += 15;
-
-  if (Passwordlength < 8) {
-    Strengthscore = Math.min(Strengthscore, 40);
-  }
-
-  const safeScore = Math.min(5, Math.min(100, Strengthscore));
-  Strengthbar.style.width = safeScore + "%";
-
-  let StrengthLableText = "";
-  let barcolor = "";
-
-  if (Strengthscore < 40) {
-    barcolor = "#fc8181";
-    StrengthLableText = "Weak";
-  } else if (Strengthscore < 70) {
-    barcolor = "#fbd38d";
-    StrengthLableText = "Medium";
-  } else {
-    barcolor = "#68d391";
-    StrengthLableText = "Strong";
-  }
-
-  Strengthbar.style.backgroundColor = barcolor;
-  Strengthlabel.textContent = StrengthLableText;
-}
-
-Copybtn.addEventListener("click", () => {
-  navigator.clipboard.writeText(Password.value);
-  Copybtn.title = "Copied!";
-  setTimeout(() => {
-    Copybtn.title = "Copy to clipboard";
-  }, 1000);
+  passwordEl.value = newPassword;
+  updateStrengthMeter(newPassword);
 });
+
+function createPassword(length, upper, lower, number, symbol) {
+  let characters = "";
+  let result = "";
+
+  if (upper) characters += uppercaseLetters;
+  if (lower) characters += lowercaseLetters;
+  if (number) characters += numberCharacters;
+  if (symbol) characters += symbolsCharacters;
+
+  for (let i = 0; i < length; i++) {
+    const randIndex = Math.floor(Math.random() * characters.length);
+    result += characters[randIndex];
+  }
+
+  return result;
+}
+
+function updateStrengthMeter(password) {
+  const hasUpper = /[A-Z]/.test(password);
+  const hasLower = /[a-z]/.test(password);
+  const hasNumber = /[0-9]/.test(password);
+  const hasSymbol = /[^A-Za-z0-9]/.test(password);
+
+  let score = 0;
+  score += password.length * 2;
+  if (hasUpper) score += 10;
+  if (hasLower) score += 10;
+  if (hasNumber) score += 10;
+  if (hasSymbol) score += 10;
+
+  let label = "";
+  let color = "";
+
+  if (score < 40) {
+    label = "Weak";
+    color = "#fc8181";
+  } else if (score < 70) {
+    label = "Medium";
+    color = "#fbd38d";
+  } else {
+    label = "Strong";
+    color = "#68d391";
+  }
+
+  strengthBar.style.width = Math.min(score, 100) + "%";
+  strengthBar.style.backgroundColor = color;
+  strengthLabel.textContent = label;
+}
+
+copyBtn.addEventListener("click", () => {
+  if (passwordEl.value.trim() !== "") {
+    navigator.clipboard.writeText(passwordEl.value);
+    showcopybutton();
+  }
+});
+
+function showcopybutton() {
+  copyBtn.classList.remove("far", "fa-copy");
+  copyBtn.classList.add("fas", "fa-check");
+
+  copyBtn.style.color = "#48bb78";
+
+  setTimeout(() => {
+    copyBtn.classList.remove("fas", "fa-check");
+    copyBtn.classList.add("far", "fa-copy");
+  }, 1500);
+}
